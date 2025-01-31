@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { UserPublicPresentations } from './presentations/userPublic.presentations';
 import { UserCreateUseCase } from '../application/useCases/userCreate.useCase';
-import { Public } from 'src/modules/auth/decorators/public.decorator';
+import { Public } from 'src/modules/auth/application/decorators/public.decorator';
 import { CreateUserDto } from '../application/dto/create-user.dto';
 import { UserGetUseCase } from '../application/useCases/userGet.useCase';
 import { UserNotFoundException } from '../domain/exceptions/userNotFound.exception';

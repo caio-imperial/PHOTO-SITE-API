@@ -8,7 +8,7 @@ import {
   Request,
 } from '@nestjs/common';
 import { SignInDto } from '../application/dto/signIn.dto';
-import { Public } from '../decorators/public.decorator';
+import { Public } from '../application/decorators/public.decorator';
 import { AuthService } from '../application/auth.service';
 
 @Controller('auth')
