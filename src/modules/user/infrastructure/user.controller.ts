@@ -9,7 +9,7 @@ import {
   Request,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UserPublicPresentations } from './presentations/user-public.presentations';
+import { UserPublicPresentations } from './presentations/user-public.presentation';
 import { UserCreateUseCase } from '../application/useCases/userCreate.useCase';
 import { Public } from '../../auth/application/decorators/public.decorator';
 import { CreateUserDto } from '../application/dto/create-user.dto';
