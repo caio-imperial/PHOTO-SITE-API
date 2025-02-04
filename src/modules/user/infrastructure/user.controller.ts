@@ -3,9 +3,11 @@ import {
   Controller,
   Get,
   HttpCode,
-  Logger,
+  HttpException,
+  HttpStatus,
   NotFoundException,
   Post,
+  Put,
   Request,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -16,14 +18,16 @@ import { CreateUserDto } from '../application/dto/create-user.dto';
 import { UserGetUseCase } from '../application/useCases/userGet.useCase';
 import { UserNotFoundException } from '../domain/exceptions/userNotFound.exception';
 import { InvalidInputException } from '../domain/exceptions/invalidInput.exception';
+import { plainToInstance } from 'class-transformer';
+import { UpdateUserDto } from '../application/dto/update-user.dto';
+import { UserUpdateUseCase } from '../application/useCases/user-update.use-case';
 
 @Controller('user')
 export class UserController {
-  private readonly logger = new Logger(UserController.name);
-
   constructor(
     private readonly userCreateUseCase: UserCreateUseCase,
     private readonly userGetUseCase: UserGetUseCase,
+    private readonly userUpdateUseCase: UserUpdateUseCase,
   ) {}
 
   @Public()
@@ -56,38 +60,27 @@ export class UserController {
     }
   }
 
-  // @Get()
-  // async showUsers(): Promise<ResponseUserDto[]> {
-  //   this.logger.log('start list user');
-  //   this.logger.log('return all user');
-  //   return plainToInstance(ResponseUserDto, await this.userService.findAll(), {
-  //     excludeExtraneousValues: true,
-  //   });
-  // }
+  @Put()
+  async updateUsers(
+    @Request() req,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<UserPublicPresentations> {
+    if (!updateUserDto.name && !updateUserDto.lastName) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+          message: 'Body cannot be empty',
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
 
-  // @Put(':id')
-  // async updateUsers(
-  //   @Param('id') id: string,
-  //   @Body() updateUserDto: UpdateUserDto,
-  // ): Promise<ResponseUserDto> {
-  //   this.logger.log('start to update user');
-  //   if (!updateUserDto.name && !updateUserDto.lastName) {
-  //     throw new HttpException(
-  //       {
-  //         statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-  //         message: 'Body cannot be empty',
-  //       },
-  //       HttpStatus.UNPROCESSABLE_ENTITY,
-  //     );
-  //   }
-
-  //   this.logger.log('return user updated');
-  //   return plainToInstance(
-  //     ResponseUserDto,
-  //     await this.userService.updateById(id, updateUserDto),
-  //     {
-  //       excludeExtraneousValues: true,
-  //     },
-  //   );
-  // }
+    return plainToInstance(
+      UserPublicPresentations,
+      await this.userUpdateUseCase.execute(req.currentUser.sub, updateUserDto),
+      {
+        excludeExtraneousValues: true,
+      },
+    );
+  }
 }
