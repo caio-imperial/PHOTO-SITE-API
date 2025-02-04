@@ -1,10 +1,20 @@
 import { Module } from '@nestjs/common';
-import { DatabaseService } from './database.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { mongoDbConstants } from './constants/mongoDb.constant';
+
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [MongooseModule.forRoot(mongoDbConstants.uri)],
-  providers: [DatabaseService],
+  imports: [
+    ConfigModule.forRoot(),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGO_DB_URI'),
+        retryAttempts: 5,
+        retryDelay: 5000,
+      }),
+      inject: [ConfigService],
+    }),
+  ],
 })
 export class DatabaseModule {}
