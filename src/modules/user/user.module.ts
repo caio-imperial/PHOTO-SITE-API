@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './infrastructure/mongoDb/user.schema';
 import { DatabaseModule } from '../database/database.module';
 import { UserGetUseCase } from './application/useCases/userGet.useCase';
+import { UserUpdateUseCase } from './application/useCases/user-update.use-case';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { UserGetUseCase } from './application/useCases/userGet.useCase';
     UserService,
     UserCreateUseCase,
     UserGetUseCase,
+    UserUpdateUseCase,
     {
       provide: 'UserRepository',
       useClass: UserRepositoryMongoDb,
