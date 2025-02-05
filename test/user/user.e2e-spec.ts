@@ -102,7 +102,7 @@ describe('UserController (e2e)', () => {
       name: 'updatedUser',
       lastName: 'updatedUserLastName',
     };
-    console.log(userLogin.accessToken);
+
     await request(app.getHttpServer())
       .put('/user')
       .set('Authorization', `Bearer ${userLogin.accessToken}`)
