@@ -3,14 +3,14 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { getModelToken } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
-import { AppModule } from '../../src/modules/app.module';
-import { UserController } from '../../src/modules/user/infrastructure/user.controller';
-import { CreateUserDto } from '../../src/modules/user/application/dto/create-user.dto';
-import { startMongo } from '../../test/global-setup';
-import { UpdateUserDto } from '../../src/modules/user/application/dto/update-user.dto';
-import { createUser } from '../factories/mongo-db/user.factory';
-import { User } from '../../src/modules/user/domain/user.entity';
-import { UserMongo } from '../../src/modules/user/infrastructure/mongoDb/user.schema';
+import { AppModule } from '../src/modules/app.module';
+import { UserController } from '../src/modules/user/infrastructure/user.controller';
+import { CreateUserDto } from '../src/modules/user/application/dto/create-user.dto';
+import { startMongo } from './global-setup';
+import { UpdateUserDto } from '../src/modules/user/application/dto/update-user.dto';
+import { createUser } from './factories/mongo-db/user.factory';
+import { User } from '../src/modules/user/domain/user.entity';
+import { UserMongo } from '../src/modules/user/infrastructure/mongoDb/user.schema';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
