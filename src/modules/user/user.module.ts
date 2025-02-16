@@ -8,6 +8,7 @@ import { UserSchema } from './infrastructure/mongoDb/user.schema';
 import { DatabaseModule } from '../database/database.module';
 import { UserGetUseCase } from './application/useCases/userGet.useCase';
 import { UserUpdateUseCase } from './application/useCases/user-update.use-case';
+import { MongooseTransactionManager } from '../database/infrastructure/mongoDb/mongoose-transation-manager.repository';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UserUpdateUseCase } from './application/useCases/user-update.use-case';
       provide: 'UserRepository',
       useClass: UserRepositoryMongoDb,
     },
+    { provide: 'Transaction', useClass: MongooseTransactionManager },
   ],
   controllers: [UserController],
   exports: ['UserRepository'],
